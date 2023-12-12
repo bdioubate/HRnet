@@ -165,7 +165,7 @@ const EmployeeList = () => {
                 <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {pageCount === 0 ? '0' : '1'}
                 </button> 
-                <input type="number" min={0} max={pageCount}
+                <input type="number" min={pageCount === 0 ? 0 : 1} max={pageCount}
                 defaultValue={pageCount === 0 ? pageIndex : pageIndex + 1} 
                 onChange={ e => {
                     const pageNumber = e.target.value ? Number(e.target.value) -1 : 0

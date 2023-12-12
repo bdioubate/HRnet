@@ -112,7 +112,9 @@ const CreateEmployee = () => {
     <main className="main">
         {
             send === true ?
-                <Modal />
+                <Modal 
+                    message = 'Employee created !'
+                />
             :
                 null
         }
