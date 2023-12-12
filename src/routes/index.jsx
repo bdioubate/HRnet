@@ -7,14 +7,9 @@ import EmployeeList from '../pages/EmployeeList'
 //Components
 import Banner from '../components/Banner'
 
-//Redux
-import { Provider } from 'react-redux'
-import { store } from '../redux'
-
 function RoutesPath() {
 
   return (
-    <Provider store={store}>
       <Router>
         <Banner />
           <Switch>
@@ -22,7 +17,6 @@ function RoutesPath() {
             <Route path="/employee-list" element={<EmployeeList />}></Route>
           </Switch>
       </Router>
-    </Provider>
   )
 }
 

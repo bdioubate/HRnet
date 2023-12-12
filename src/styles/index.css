@@ -42,11 +42,23 @@ header nav a {
 }
 
 
-.container {
+main.container {
+  /*display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;*/
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 50px) auto 50px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  padding: 0 200px;
+}
+
+.formContainer, form#create-employee {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 label {
@@ -56,7 +68,90 @@ label {
 }
 
 .address {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 10px;
 }
 
+#BtnSubmit {
+  margin: 20px 0;
+}
+
+#messageErrorForm {
+  margin-top: 20px;
+  color: red;
+}
+
+/* Page EmployeeList */
+
+main.container h1 {
+  grid-area: 1 / 1 / 2 / 3;/*1er div GRID*/
+  text-align: center;
+}
+#showEntries {
+  display: flex;
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  grid-area: 2 / 1 / 3 / 2;/*2eme div GRID*/
+}
+main.container span {
+  display: flex;
+  justify-content: flex-end;
+  grid-area: 2 / 2 / 3 / 3;/*3eme div GRID*/
+}
+main.container table {
+  grid-area: 3 / 1 / 4 / 3;/*4eme div GRID*/
+}
+#manyShowEntries {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  grid-area: 4 / 1 / 5 / 2;/*5eme div GRID*/
+}
+
+#btnShowEntries {
+  display: flex;
+  justify-content: flex-end;
+  grid-area: 4 / 2 / 5 / 3;/*6eme div GRID*/
+}
+#btnShowEntries input {
+  width: 30px;
+}
+#showEntries select {
+  width: 45px;
+}
+.btnTable {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+tbody tr td {
+  text-align: center;
+}
+
+thead tr th.sort {
+  background-image: url('../assets/sort_both.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+  min-width: 50px;
+}
+thead tr th.sort_asc {
+  background-image: url('../assets/sort_asc.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+thead tr th.sort_desc {
+  background-image: url('../assets/sort_desc.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+#noData {
+  position: relative;
+  left: 435px;
+  top: 15px;
+}
 

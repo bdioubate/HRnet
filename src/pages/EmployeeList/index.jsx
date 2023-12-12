@@ -16,11 +16,11 @@ const EmployeeList = () => {
     const columns = useMemo(() => [
         {
             Header: "First Name",
-            accessor: "firstname"
+            accessor: "firstName"
         },
         {
             Header: "Last Name",
-            accessor: "lastname"
+            accessor: "lastName"
         },
         {
             Header: "Start Date",
@@ -52,35 +52,62 @@ const EmployeeList = () => {
         }
     ], [])
 
-    const { getTableProps, getTableBodyProps, headerGroups, page, nextPage, previousPage, canNextPage, canPreviousPage, pageOptions, state, prepareRow, setPageSize, setGlobalFilter} = useTable({ columns, data }, useGlobalFilter, useSortBy, usePagination)
+    const {
+        getTableProps, 
+        getTableBodyProps, 
+        headerGroups, 
+        page, 
+        nextPage, 
+        previousPage, 
+        canNextPage, 
+        canPreviousPage, 
+        pageOptions, 
+        gotoPage, 
+        pageCount, 
+        state, 
+        prepareRow, 
+        setPageSize, 
+        setGlobalFilter
+    } = useTable(
+        { 
+            columns, 
+            data
+            //initialState: {pageIndex : 0-1 }
+        }, 
+        useGlobalFilter, 
+        useSortBy, 
+        usePagination)
     
     const { pageIndex, pageSize, globalFilter } = state
     
     return (
         <main id="employee-div" className="main container">
             <h1>Current Employees</h1>
-            <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+            <div id="showEntries">
+                <span>Show</span>
+                <select
+                    value={pageSize}
+                    onChange={(e) => {
+                        setPageSize(Number(e.target.value));
+                    }}
+                    >
+                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                        <option key={pageSize} value={pageSize}>
+                            {pageSize}
+                        </option>
+                    ))}
+                </select>
+                <span>entries</span>
+            </div>
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
             <table id="employee-table" className="display" {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                <th className={` sort ${column.isSorted ? (column.isSortedDesc ? 'sort_asc ' : ' sort_desc ') : ''}`} {...column.getHeaderProps(column.getSortByToggleProps())}>
                                     {column.render("Header")}
                                     <span>
-                                        {column.isSorted ? (column.isSortedDesc ? '<' : ' >') : ''}
                                     </span>
                                 </th>
                             ))}
@@ -89,7 +116,13 @@ const EmployeeList = () => {
                 </thead>
                 {
                 employeeInStorage === null ? 
-                    <p>No data available in table</p>
+                    <tbody>
+                        <tr>
+                            <td id="noData">
+                                No data available in table
+                            </td>
+                        </tr>
+                    </tbody>
                 : 
                     <tbody {... getTableBodyProps}>
                         {page.map((row) => {
@@ -115,23 +148,39 @@ const EmployeeList = () => {
                     </tbody>
                 }
             </table>
-            <div>
-                <span>
-                    Showing{' '}
-                    <strong>
+            <div id="manyShowEntries">
+                    <span>Showing</span>
+                    <span>
                         {
                         employeeInStorage === null ? 
                         pageIndex
                         :   
                         pageIndex + 1
                         } to {pageOptions.length}
-                    </strong>{' '}of{' '}{pageOptions.length}{' '}entries
-                </span>
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>
-                <button onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
+                    </span>
+                    <span> of {pageOptions.length} entries</span>
+            </div>
+            <div id="btnShowEntries">
+                <button className="btnTable" onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>
+                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                    {pageCount === 0 ? '0' : '1'}
+                </button> 
+                <input type="number" min={0} max={pageCount}
+                defaultValue={pageCount === 0 ? pageIndex : pageIndex + 1} 
+                onChange={ e => {
+                    const pageNumber = e.target.value ? Number(e.target.value) -1 : 0
+                    gotoPage(pageNumber)
+                }}
+                />
+                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                    {`${pageCount}`}
+                </button>
+                <button className="btnTable" onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
             </div>
         </main>
     )
   }
   
   export default EmployeeList 
+
+  //L87 {column.isSorted ? (column.isSortedDesc ? '<' : ' >') : ''}
